@@ -1,3 +1,3 @@
-hello world!!\n
-this is readme.md file!\n
-have a good time.\n
+hello world!!
+this is readme.md file!...
+have a good time.
