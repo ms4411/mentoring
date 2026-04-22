@@ -14,7 +14,6 @@
    10. 실무: 다크모드 토글, 햄버거 메뉴, IntersectionObserver
    ============================================================================= */
 
-
 /* =============================================================================
    🔹 PART 1: OOP(객체지향 프로그래밍) 4대 원칙 + 클래스 + 상속
    =============================================================================
@@ -36,7 +35,6 @@
    │          │ 외부에 제공 (사용자는 "어떻게" 아닌 "무엇을")  │
    └──────────┴──────────────────────────────────────────────┘
    ============================================================================= */
-
 
 /* -----------------------------------------------------------------------------
    📌 추상화(Abstraction) + 캡슐화(Encapsulation)의 기본: Component 클래스
@@ -60,7 +58,7 @@ class Component {
   // 📌 constructor: 클래스로 객체를 만들 때(new) 자동으로 실행되는 함수
   // 📌 this: "지금 만들어지는 이 객체 자신"을 가리킴
   constructor(name) {
-    this.#name = name;     // private 필드에 이름 저장
+    this.#name = name; // private 필드에 이름 저장
     this.isActive = false; // 활성화 상태 (public)
   }
 
@@ -80,10 +78,9 @@ class Component {
   // 이 메서드는 "자식 클래스에서 같은 이름으로 다시 정의(오버라이딩)"될 예정!
   // → 같은 getStatus()를 호출해도 ThemeManager와 MenuController가 다른 결과를 반환
   getStatus() {
-    return `${this.#name}: ${this.isActive ? '활성' : '비활성'}`;
+    return `${this.#name}: ${this.isActive ? "활성" : "비활성"}`;
   }
 }
-
 
 /* -----------------------------------------------------------------------------
    📌 상속(Inheritance): ThemeManager extends Component
@@ -105,7 +102,7 @@ class ThemeManager extends Component {
 
   constructor() {
     // 📌 super(): 부모(Component)의 constructor(name)를 호출
-    super('ThemeManager');
+    super("ThemeManager");
     this.#isDark = false;
   }
 
@@ -113,7 +110,7 @@ class ThemeManager extends Component {
   toggle() {
     this.#isDark = !this.#isDark;
     // 📌 DOM 조작: body에 "dark" 클래스를 추가/제거
-    document.body.classList.toggle('dark');
+    document.body.classList.toggle("dark");
     return this.#isDark;
   }
 
@@ -126,10 +123,9 @@ class ThemeManager extends Component {
   // 부모는 "이름: 활성/비활성"만 반환하지만,
   // ThemeManager는 "다크모드 켜짐/꺼짐" 정보도 추가로 반환함.
   getStatus() {
-    return `${this.getName()}: 다크모드 ${this.#isDark ? '켜짐 🌙' : '꺼짐 ☀️'}`;
+    return `${this.getName()}: 다크모드 ${this.#isDark ? "켜짐 🌙" : "꺼짐 ☀️"}`;
   }
 }
-
 
 /* -----------------------------------------------------------------------------
    📌 상속 + 다형성: MenuController extends Component
@@ -143,7 +139,7 @@ class MenuController extends Component {
   #menuElement; // DOM 요소 참조 (캡슐화)
 
   constructor(menuSelector) {
-    super('MenuController');
+    super("MenuController");
     this.#isOpen = false;
     // 📌 querySelector: CSS 선택자로 HTML 요소를 찾아옴
     this.#menuElement = document.querySelector(menuSelector);
@@ -154,7 +150,7 @@ class MenuController extends Component {
     this.#isOpen = !this.#isOpen;
     // classList.toggle: 클래스가 있으면 제거, 없으면 추가
     if (this.#menuElement) {
-      this.#menuElement.classList.toggle('open');
+      this.#menuElement.classList.toggle("open");
     }
     return this.#isOpen;
   }
@@ -163,16 +159,15 @@ class MenuController extends Component {
   close() {
     this.#isOpen = false;
     if (this.#menuElement) {
-      this.#menuElement.classList.remove('open');
+      this.#menuElement.classList.remove("open");
     }
   }
 
   // 📌 다형성: getStatus() 오버라이딩 — 메뉴 열림/닫힘 상태 반환
   getStatus() {
-    return `${this.getName()}: 메뉴 ${this.#isOpen ? '열림 📂' : '닫힘 📁'}`;
+    return `${this.getName()}: 메뉴 ${this.#isOpen ? "열림 📂" : "닫힘 📁"}`;
   }
 }
-
 
 /* -----------------------------------------------------------------------------
    📌 상속 + 캡슐화: ScrollAnimator extends Component
@@ -185,7 +180,7 @@ class ScrollAnimator extends Component {
   #observer; // IntersectionObserver 인스턴스 (private)
 
   constructor() {
-    super('ScrollAnimator');
+    super("ScrollAnimator");
     this.#observer = null;
   }
 
@@ -222,16 +217,16 @@ class ScrollAnimator extends Component {
         // for...of는 배열의 값(value)을 직접 꺼내옴!
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+            entry.target.classList.add("visible");
           }
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.15 },
     );
 
     // 📌 querySelectorAll: 조건에 맞는 모든 요소를 NodeList로 반환
     // querySelector: 첫 번째 하나만 / querySelectorAll: 전부 다!
-    const fadeElements = document.querySelectorAll('.fade-in');
+    const fadeElements = document.querySelectorAll(".fade-in");
 
     // 📌 for...of로 NodeList 순회 → 각 요소를 observer에 등록
     for (const element of fadeElements) {
@@ -240,12 +235,11 @@ class ScrollAnimator extends Component {
   }
 
   getStatus() {
-    const count = document.querySelectorAll('.fade-in.visible').length;
-    const total = document.querySelectorAll('.fade-in').length;
+    const count = document.querySelectorAll(".fade-in.visible").length;
+    const total = document.querySelectorAll(".fade-in").length;
     return `${this.getName()}: ${count}/${total} 요소 표시됨`;
   }
 }
-
 
 /* =============================================================================
    🔹 PART 2: 변수(const), 배열(Array), 객체(Object)
@@ -268,13 +262,12 @@ class ScrollAnimator extends Component {
 // 📌 학생 데이터 배열 - 각 요소가 "객체(Object)"
 // 배열 안에 객체를 넣으면 → 여러 학생의 정보를 체계적으로 관리할 수 있음!
 const students = [
-  { name: '김민수', grade: 92, major: '프론트엔드' },
-  { name: '이서연', grade: 88, major: '백엔드' },
-  { name: '박지훈', grade: 75, major: '프론트엔드' },
-  { name: '최수아', grade: 95, major: '디자인' },
-  { name: '정우진', grade: 60, major: '백엔드' }
+  { name: "김민수", grade: 92, major: "프론트엔드" },
+  { name: "이서연", grade: 88, major: "백엔드" },
+  { name: "박지훈", grade: 75, major: "프론트엔드" },
+  { name: "최수아", grade: 95, major: "디자인" },
+  { name: "정우진", grade: 60, major: "백엔드" },
 ];
-
 
 /* =============================================================================
    🔹 PART 3: 함수 (매개변수, return)
@@ -299,23 +292,22 @@ function getGradeLabel(grade) {
   // 📌 조건문 (if / else if / else)
   // 조건이 true이면 해당 블록 실행, 아니면 다음 조건으로 넘어감
   if (grade >= 90) {
-    return '우수 🏆';       // 90점 이상
+    return "우수 🏆"; // 90점 이상
   } else if (grade >= 80) {
-    return '양호 👍';       // 80~89점
+    return "양호 👍"; // 80~89점
   } else if (grade >= 70) {
-    return '보통 📚';       // 70~79점
+    return "보통 📚"; // 70~79점
   } else {
-    return '노력 필요 💪';  // 70점 미만
+    return "노력 필요 💪"; // 70점 미만
   }
 }
 
 // 📌 함수: 성적에 따라 CSS 클래스명을 반환 (카드 색상 결정용)
 function getGradeClass(grade) {
-  if (grade >= 90) return 'grade-high';
-  if (grade >= 70) return 'grade-mid';
-  return 'grade-low';
+  if (grade >= 90) return "grade-high";
+  if (grade >= 70) return "grade-mid";
+  return "grade-low";
 }
-
 
 /* =============================================================================
    🔹 PART 4: 학생 카드 렌더링 (반복문 + DOM 조작)
@@ -334,10 +326,10 @@ function getGradeClass(grade) {
 // 학생 카드를 화면에 그리는 함수
 function renderStudentCards() {
   // 📌 querySelector: CSS 선택자로 HTML 요소 1개를 가져옴
-  const container = document.querySelector('#studentCards');
+  const container = document.querySelector("#studentCards");
   if (!container) return; // about.html 등에서는 이 요소가 없으므로 안전하게 종료
 
-  container.innerHTML = ''; // 기존 내용 비우기
+  container.innerHTML = ""; // 기존 내용 비우기
 
   // ═══════════════════════════════════════════════════
   // 📌 for...of 반복문: 배열의 각 "값(value)"을 순회
@@ -354,8 +346,8 @@ function renderStudentCards() {
   // for...in → 배열의 인덱스(key) 순회: 0, 1, 2, ...
   // ═══════════════════════════════════════════════════
   for (const student of students) {
-    const card = document.createElement('div');
-    card.className = 'student-card';
+    const card = document.createElement("div");
+    card.className = "student-card";
 
     // 📌 함수 호출: 매개변수로 student.grade를 전달 → return값을 받아서 사용
     const gradeLabel = getGradeLabel(student.grade);
@@ -374,13 +366,12 @@ function renderStudentCards() {
   }
 }
 
-
 /* =============================================================================
    🔹 PART 5: 통계 계산 (for 반복문 + for...in)
    ============================================================================= */
 
 function renderStats() {
-  const statsOutput = document.querySelector('#statsOutput');
+  const statsOutput = document.querySelector("#statsOutput");
   if (!statsOutput) return;
 
   // ═══════════════════════════════════════════════════
@@ -395,7 +386,7 @@ function renderStats() {
   // ═══════════════════════════════════════════════════
   let totalGrade = 0;
   let highestGrade = 0;
-  let highestStudent = '';
+  let highestStudent = "";
 
   for (let i = 0; i < students.length; i++) {
     totalGrade += students[i].grade;
@@ -430,12 +421,12 @@ function renderStats() {
     if (majorCount[major]) {
       majorCount[major] += 1; // 이미 있으면 +1
     } else {
-      majorCount[major] = 1;  // 처음이면 1로 시작
+      majorCount[major] = 1; // 처음이면 1로 시작
     }
   }
 
   // 📌 for...in으로 객체(majorCount)의 키를 순회하여 문자열 생성
-  let majorText = '';
+  let majorText = "";
   for (const major in majorCount) {
     majorText += `  - ${major}: ${majorCount[major]}명\n`;
   }
@@ -446,47 +437,46 @@ function renderStats() {
     평균 성적: ${average.toFixed(1)}점<br>
     최고 성적: ${highestStudent} (${highestGrade}점)<br><br>
     <strong>📂 전공별 분포:</strong><br>
-    ${majorText.replace(/\n/g, '<br>')}
+    ${majorText.replace(/\n/g, "<br>")}
   `;
 }
-
 
 /* =============================================================================
    🔹 PART 6: JS 핵심 개념 데모 출력
    ============================================================================= */
 
 function renderJSConceptsDemo() {
-  const output = document.querySelector('#jsOutput');
+  const output = document.querySelector("#jsOutput");
   if (!output) return;
 
-  let text = '';
+  let text = "";
 
   // --- 변수 ---
-  text += '═══ 변수 (const) ═══\n';
-  const siteName = '프론트엔드 학습';
+  text += "═══ 변수 (const) ═══\n";
+  const siteName = "프론트엔드 학습";
   const version = 2;
   text += `const siteName = "${siteName}"\n`;
   text += `const version = ${version}\n\n`;
 
   // --- 배열 ---
-  text += '═══ 배열 (Array) ═══\n';
-  const skills = ['HTML', 'CSS', 'JavaScript'];
-  text += `skills = [${skills.join(', ')}]\n`;
+  text += "═══ 배열 (Array) ═══\n";
+  const skills = ["HTML", "CSS", "JavaScript"];
+  text += `skills = [${skills.join(", ")}]\n`;
   text += `skills[0] = ${skills[0]}  (인덱스는 0부터!)\n`;
   text += `skills.length = ${skills.length}\n\n`;
 
   // --- 객체 ---
-  text += '═══ 객체 (Object) ═══\n';
+  text += "═══ 객체 (Object) ═══\n";
   const project = {
-    name: '프론트엔드 학습',
+    name: "프론트엔드 학습",
     year: 2026,
-    isActive: true
+    isActive: true,
   };
   text += `project.name = "${project.name}"\n`;
   text += `project.year = ${project.year}\n\n`;
 
   // --- 함수 ---
-  text += '═══ 함수 (매개변수, return) ═══\n';
+  text += "═══ 함수 (매개변수, return) ═══\n";
   function multiply(a, b) {
     return a * b;
   }
@@ -494,7 +484,7 @@ function renderJSConceptsDemo() {
   text += `getGradeLabel(92) = "${getGradeLabel(92)}"\n\n`;
 
   // --- 조건문 ---
-  text += '═══ 조건문 (if/else) ═══\n';
+  text += "═══ 조건문 (if/else) ═══\n";
   const testScore = 85;
   if (testScore >= 90) {
     text += `${testScore}점 → 우수\n`;
@@ -503,25 +493,25 @@ function renderJSConceptsDemo() {
   } else {
     text += `${testScore}점 → 보통\n`;
   }
-  text += '\n';
+  text += "\n";
 
   // --- 반복문 3종 비교 ---
-  text += '═══ 반복문 비교 (for / for...of / for...in) ═══\n';
+  text += "═══ 반복문 비교 (for / for...of / for...in) ═══\n";
 
   // for: 인덱스 기반
-  text += '▸ for (인덱스 기반):\n';
+  text += "▸ for (인덱스 기반):\n";
   for (let i = 0; i < skills.length; i++) {
     text += `  skills[${i}] = ${skills[i]}\n`;
   }
 
   // for...of: 값 기반
-  text += '▸ for...of (값 기반):\n';
+  text += "▸ for...of (값 기반):\n";
   for (const skill of skills) {
     text += `  skill = ${skill}\n`;
   }
 
   // for...in: 키(key) 기반 — 객체에 사용
-  text += '▸ for...in (키 기반 - 객체 순회):\n';
+  text += "▸ for...in (키 기반 - 객체 순회):\n";
   for (const key in project) {
     text += `  project.${key} = ${project[key]}\n`;
   }
@@ -529,37 +519,37 @@ function renderJSConceptsDemo() {
   output.textContent = text;
 }
 
-
 /* =============================================================================
    🔹 PART 7: OOP 4대 원칙 데모 출력
    ============================================================================= */
 
 function renderOOPDemo() {
-  const output = document.querySelector('#oopOutput');
+  const output = document.querySelector("#oopOutput");
   if (!output) return;
 
-  let text = '';
+  let text = "";
 
   // --- 캡슐화 데모 ---
-  text += '═══ 1. 캡슐화 (Encapsulation) ═══\n';
-  text += 'ThemeManager 내부의 #isDark는 외부에서 직접 접근 불가!\n';
-  text += 'themeManager.isDarkMode() 메서드로만 상태를 읽을 수 있음.\n';
-  text += '→ 데이터를 보호하고, 정해진 통로로만 접근하게 강제!\n\n';
+  text += "═══ 1. 캡슐화 (Encapsulation) ═══\n";
+  text += "ThemeManager 내부의 #isDark는 외부에서 직접 접근 불가!\n";
+  text += "themeManager.isDarkMode() 메서드로만 상태를 읽을 수 있음.\n";
+  text += "→ 데이터를 보호하고, 정해진 통로로만 접근하게 강제!\n\n";
 
   // --- 상속 데모 ---
-  text += '═══ 2. 상속 (Inheritance) ═══\n';
-  text += 'Component (부모) → ThemeManager, MenuController, ScrollAnimator (자식)\n';
-  text += '자식들은 부모의 getName(), init(), getStatus()를 물려받음.\n';
-  text += 'extends로 상속 선언, super()로 부모 생성자 호출.\n\n';
+  text += "═══ 2. 상속 (Inheritance) ═══\n";
+  text +=
+    "Component (부모) → ThemeManager, MenuController, ScrollAnimator (자식)\n";
+  text += "자식들은 부모의 getName(), init(), getStatus()를 물려받음.\n";
+  text += "extends로 상속 선언, super()로 부모 생성자 호출.\n\n";
 
   // --- 다형성 데모 ---
-  text += '═══ 3. 다형성 (Polymorphism) ═══\n';
-  text += '모든 컴포넌트에 getStatus()를 호출하면 각각 다른 결과:\n';
+  text += "═══ 3. 다형성 (Polymorphism) ═══\n";
+  text += "모든 컴포넌트에 getStatus()를 호출하면 각각 다른 결과:\n";
 
   // 📌 다형성 실전: 같은 getStatus() 메서드지만 결과가 다름!
   // 부모 타입의 배열에 서로 다른 자식 객체를 담아서 동일 메서드 호출
   const themeDemo = new ThemeManager();
-  const menuDemo = new MenuController('#navMenu');
+  const menuDemo = new MenuController("#navMenu");
   const scrollDemo = new ScrollAnimator();
 
   // 📌 배열에 서로 다른 타입의 객체를 담고, 동일한 메서드를 호출
@@ -569,19 +559,18 @@ function renderOOPDemo() {
   for (const comp of components) {
     text += `  ${comp.getStatus()}\n`;
   }
-  text += '→ 같은 getStatus()인데 클래스마다 다른 결과 = 다형성!\n\n';
+  text += "→ 같은 getStatus()인데 클래스마다 다른 결과 = 다형성!\n\n";
 
   // --- 추상화 데모 ---
-  text += '═══ 4. 추상화 (Abstraction) ═══\n';
-  text += 'Component 클래스가 공통 인터페이스(init, getStatus)를 정의.\n';
-  text += '사용자는 comp.init()만 호출하면 됨.\n';
-  text += 'ThemeManager가 내부에서 뭘 하는지, ScrollAnimator가\n';
-  text += 'IntersectionObserver를 어떻게 설정하는지 몰라도 OK!\n';
-  text += '→ 복잡한 구현을 숨기고 간단한 사용법만 제공 = 추상화!\n';
+  text += "═══ 4. 추상화 (Abstraction) ═══\n";
+  text += "Component 클래스가 공통 인터페이스(init, getStatus)를 정의.\n";
+  text += "사용자는 comp.init()만 호출하면 됨.\n";
+  text += "ThemeManager가 내부에서 뭘 하는지, ScrollAnimator가\n";
+  text += "IntersectionObserver를 어떻게 설정하는지 몰라도 OK!\n";
+  text += "→ 복잡한 구현을 숨기고 간단한 사용법만 제공 = 추상화!\n";
 
   output.textContent = text;
 }
-
 
 /* =============================================================================
    🔹 PART 8: 모든 것을 연결! (초기화)
@@ -600,41 +589,41 @@ function renderOOPDemo() {
 
 // --- 실제 사용할 OOP 인스턴스 생성 ---
 const themeManager = new ThemeManager();
-const menuController = new MenuController('#navMenu');
+const menuController = new MenuController("#navMenu");
 const scrollAnimator = new ScrollAnimator();
 
 // --- DOM 요소 가져오기 ---
 // 📌 querySelector: CSS 선택자로 HTML 요소 1개를 찾아서 가져옴
 // '#themeBtn' → id가 "themeBtn"인 요소
 // '.hero' → class가 "hero"인 첫 번째 요소
-const themeBtn = document.querySelector('#themeBtn');
-const greetBtn = document.querySelector('#greetBtn');
-const menuBtn = document.querySelector('#menuBtn');
-const addStudentBtn = document.querySelector('#addStudentBtn');
+const themeBtn = document.querySelector("#themeBtn");
+const greetBtn = document.querySelector("#greetBtn");
+const menuBtn = document.querySelector("#menuBtn");
+const addStudentBtn = document.querySelector("#addStudentBtn");
 
 // --- 이벤트 리스너 등록 ---
 
 // 📌 다크모드 토글: ThemeManager 클래스의 toggle() 메서드 사용
 if (themeBtn) {
-  themeBtn.addEventListener('click', () => {
+  themeBtn.addEventListener("click", () => {
     const isDark = themeManager.toggle();
     // 버튼 텍스트를 현재 상태에 맞게 변경
-    themeBtn.textContent = isDark ? '☀️' : '🌙';
+    themeBtn.textContent = isDark ? "☀️" : "🌙";
     console.log(themeManager.getStatus());
   });
 }
 
 // 📌 인사하기 버튼
 if (greetBtn) {
-  greetBtn.addEventListener('click', () => {
-    alert('반갑습니다! 여러분의 멋진 서비스를 기대할게요! 🚀');
-    console.log('인사하기 버튼 클릭됨');
+  greetBtn.addEventListener("click", () => {
+    alert("반갑습니다! 여러분의 멋진 서비스를 기대할게요! 🚀");
+    console.log("인사하기 버튼 클릭됨");
   });
 }
 
 // 📌 햄버거 메뉴 토글: MenuController 클래스 사용
 if (menuBtn) {
-  menuBtn.addEventListener('click', () => {
+  menuBtn.addEventListener("click", () => {
     menuController.toggle();
     console.log(menuController.getStatus());
   });
@@ -642,10 +631,10 @@ if (menuBtn) {
 
 // 📌 학생 추가 버튼: 배열에 새 객체 추가 후 다시 렌더링
 if (addStudentBtn) {
-  addStudentBtn.addEventListener('click', () => {
+  addStudentBtn.addEventListener("click", () => {
     // 📌 배열의 push() 메서드: 배열 끝에 새 요소 추가
-    const newNames = ['강하늘', '윤서준', '한예린', '송민호', '임채원'];
-    const newMajors = ['프론트엔드', '백엔드', '디자인'];
+    const newNames = ["강하늘", "윤서준", "한예린", "송민호", "임채원"];
+    const newMajors = ["프론트엔드", "백엔드", "디자인"];
     const randomName = newNames[Math.floor(Math.random() * newNames.length)];
     const randomMajor = newMajors[Math.floor(Math.random() * newMajors.length)];
     const randomGrade = Math.floor(Math.random() * 41) + 60; // 60~100점
@@ -653,13 +642,15 @@ if (addStudentBtn) {
     students.push({
       name: randomName,
       grade: randomGrade,
-      major: randomMajor
+      major: randomMajor,
     });
 
     // 카드와 통계를 다시 그림
     renderStudentCards();
     renderStats();
-    console.log(`학생 추가됨: ${randomName} (${randomGrade}점, ${randomMajor})`);
+    console.log(
+      `학생 추가됨: ${randomName} (${randomGrade}점, ${randomMajor})`,
+    );
   });
 }
 
@@ -677,7 +668,7 @@ renderJSConceptsDemo();
 renderOOPDemo();
 
 // --- 콘솔에 OOP 다형성 최종 데모 출력 ---
-console.log('═══ OOP 다형성 최종 데모 (F12 콘솔 확인) ═══');
+console.log("═══ OOP 다형성 최종 데모 (F12 콘솔 확인) ═══");
 const allComponents = [themeManager, menuController, scrollAnimator];
 for (const comp of allComponents) {
   // 📌 다형성: 같은 getStatus()지만 각각 다른 결과!
