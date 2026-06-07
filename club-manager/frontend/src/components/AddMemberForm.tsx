@@ -19,21 +19,25 @@ export default function AddMemberForm({ apiBaseUrl, onRefresh }: AddMemberFormPr
       return;
     }
 
-    const response = await fetch(`${apiBaseUrl}/members`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, role }),
-      credentials: "include"
-    });
+    try {
+      const response = await fetch(`${apiBaseUrl}/members`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, role }),
+        credentials: "include"
+      });
 
-    if (response.ok) {
-      setName("");
-      setRole("");
-      onRefresh();
-      return;
+      if (response.ok) {
+        setName("");
+        setRole("");
+        onRefresh();
+        return;
+      }
+
+      setError("추가 실패. 로그인 상태 또는 입력값을 확인해주세요.");
+    } catch {
+      setError("서버와 통신할 수 없습니다.");
     }
-
-    setError("추가 실패. 로그인 상태 또는 입력값을 확인해주세요.");
   };
 
   return (

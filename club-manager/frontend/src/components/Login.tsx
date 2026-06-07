@@ -14,19 +14,23 @@ export default function Login({ apiBaseUrl, onLoginSuccess }: LoginProps) {
     e.preventDefault();
     setError("");
 
-    const response = await fetch(`${apiBaseUrl}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-      credentials: "include"
-    });
+    try {
+      const response = await fetch(`${apiBaseUrl}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+        credentials: "include"
+      });
 
-    if (response.ok) {
-      onLoginSuccess();
-      return;
+      if (response.ok) {
+        onLoginSuccess();
+        return;
+      }
+
+      setError("아이디나 비밀번호가 틀렸습니다. admin / 1234로 로그인하세요.");
+    } catch {
+      setError("서버와 통신할 수 없습니다.");
     }
-
-    setError("아이디나 비밀번호가 틀렸습니다. admin / 1234로 로그인하세요.");
   };
 
   return (

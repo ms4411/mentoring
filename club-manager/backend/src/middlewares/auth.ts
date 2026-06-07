@@ -14,7 +14,8 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
   }
 
   try {
-    jwt.verify(token, jwtSecret);
+    const user = jwt.verify(token, jwtSecret);
+    res.locals.user = user;
     return next();
   } catch {
     return res.status(401).json({ error: "로그인이 만료되었거나 유효하지 않습니다." });

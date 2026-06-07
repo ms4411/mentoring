@@ -1,5 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
+import { authMiddleware } from "../middlewares/auth.js";
 
 const router = express.Router();
 
@@ -27,20 +28,8 @@ router.post("/login", (req, res) => {
   return res.status(200).json({ message: "로그인 성공!" });
 });
 
-router.get("/me", (req, res) => {
-  const token = req.cookies.club_token;
-  const jwtSecret = process.env.JWT_SECRET;
-
-  if (!token || !jwtSecret) {
-    return res.status(401).json({ error: "로그인이 필요합니다." });
-  }
-
-  try {
-    const user = jwt.verify(token, jwtSecret);
-    return res.status(200).json({ user });
-  } catch {
-    return res.status(401).json({ error: "로그인이 만료되었거나 유효하지 않습니다." });
-  }
+router.get("/me", authMiddleware, (_req, res) => {
+  return res.status(200).json({ user: res.locals.user });
 });
 
 router.post("/logout", (_req, res) => {

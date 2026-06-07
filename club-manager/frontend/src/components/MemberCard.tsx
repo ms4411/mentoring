@@ -69,34 +69,44 @@ function MemberCard({ apiBaseUrl, member, onRefresh }: MemberCardProps) {
       return;
     }
 
-    const response = await fetch(`${apiBaseUrl}/members/${member.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, role }),
-      credentials: "include"
-    });
+    try {
+      const response = await fetch(`${apiBaseUrl}/members/${member.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, role }),
+        credentials: "include"
+      });
 
-    if (response.ok) {
-      setIsEditing(false);
-      onRefresh();
-      return;
+      if (response.ok) {
+        setIsEditing(false);
+        onRefresh();
+        return;
+      }
+
+      setError("수정하지 못했습니다.");
+    } catch {
+      setError("서버와 통신할 수 없습니다.");
     }
-
-    setError("수정하지 못했습니다.");
   };
 
   const handleDelete = async () => {
-    const response = await fetch(`${apiBaseUrl}/members/${member.id}`, {
-      method: "DELETE",
-      credentials: "include"
-    });
+    setError("");
 
-    if (response.ok) {
-      onRefresh();
-      return;
+    try {
+      const response = await fetch(`${apiBaseUrl}/members/${member.id}`, {
+        method: "DELETE",
+        credentials: "include"
+      });
+
+      if (response.ok) {
+        onRefresh();
+        return;
+      }
+
+      setError("삭제하지 못했습니다.");
+    } catch {
+      setError("서버와 통신할 수 없습니다.");
     }
-
-    setError("삭제하지 못했습니다.");
   };
 
   if (isEditing) {
