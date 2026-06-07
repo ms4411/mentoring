@@ -22,14 +22,27 @@ app.use(
 
       callback(new Error("CORS origin is not allowed."));
     },
-    credentials: true
-  })
+    credentials: true,
+  }),
 );
 app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
 app.use("/api/members", authMiddleware, membersRouter);
+
+// 수정됨: 서버가 예상치 못한 에러로 꺼지는 것을 막는 글로벌 에러 핸들러
+app.use(
+  (
+    err: any,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction,
+  ) => {
+    console.error(err.stack);
+    res.status(500).json({ error: "서버 내부에서 문제가 발생했습니다!" });
+  },
+);
 
 app.listen(port, () => {
   console.log(`백엔드 서버 가동 중: http://localhost:${port}`);

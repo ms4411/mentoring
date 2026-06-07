@@ -13,7 +13,7 @@ function ManagePage({
   apiBaseUrl,
   refreshKey,
   onRefresh,
-  onLogout
+  onLogout,
 }: {
   apiBaseUrl: string;
   refreshKey: number;
@@ -23,7 +23,11 @@ function ManagePage({
   return (
     <Layout onLogout={onLogout}>
       <AddMemberForm apiBaseUrl={apiBaseUrl} onRefresh={onRefresh} />
-      <MemberList apiBaseUrl={apiBaseUrl} refreshKey={refreshKey} onRefresh={onRefresh} />
+      <MemberList
+        apiBaseUrl={apiBaseUrl}
+        refreshKey={refreshKey}
+        onRefresh={onRefresh}
+      />
     </Layout>
   );
 }
@@ -33,7 +37,10 @@ function App() {
   const [isCheckingSession, setIsCheckingSession] = useState(true);
   const [refreshKey, setRefreshKey] = useState(0);
 
-  const triggerRefresh = useCallback(() => setRefreshKey((prev) => prev + 1), []);
+  const triggerRefresh = useCallback(
+    () => setRefreshKey((prev) => prev + 1),
+    [],
+  );
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/auth/me`, { credentials: "include" })
@@ -44,7 +51,7 @@ function App() {
   const handleLogout = useCallback(async () => {
     await fetch(`${API_BASE_URL}/auth/logout`, {
       method: "POST",
-      credentials: "include"
+      credentials: "include",
     });
     setIsLoggedIn(false);
   }, []);
@@ -71,11 +78,17 @@ function App() {
                 onLogout={handleLogout}
               />
             ) : (
-              <Login apiBaseUrl={API_BASE_URL} onLoginSuccess={() => setIsLoggedIn(true)} />
+              <Login
+                apiBaseUrl={API_BASE_URL}
+                onLoginSuccess={() => setIsLoggedIn(true)}
+              />
             )
           }
         />
-        <Route path="/about" element={<About onLogout={isLoggedIn ? handleLogout : undefined} />} />
+        <Route
+          path="/about"
+          element={<About onLogout={isLoggedIn ? handleLogout : undefined} />}
+        />
       </Routes>
     </BrowserRouter>
   );
