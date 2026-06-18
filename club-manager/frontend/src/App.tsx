@@ -38,11 +38,11 @@ function App() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const triggerRefresh = useCallback(
-    () => setRefreshKey((prev) => prev + 1),
+    () => setRefreshKey((prev) => prev + 1), //새로고침
     [],
   );
 
-  useEffect(() => {
+  useEffect(() => { //로그인 상태를 확인 (만료인 토큰을 냅두면 쓰나..)
     fetch(`${API_BASE_URL}/auth/me`, { credentials: "include" })
       .then((response) => setIsLoggedIn(response.ok))
       .finally(() => setIsCheckingSession(false));
@@ -70,15 +70,15 @@ function App() {
         <Route
           path="/"
           element={
-            isLoggedIn ? (
-              <ManagePage
+            isLoggedIn ? ( //로그인 상태야?
+              <ManagePage // ㅇㅇ 로그인 되어 있음
                 apiBaseUrl={API_BASE_URL}
                 refreshKey={refreshKey}
                 onRefresh={triggerRefresh}
                 onLogout={handleLogout}
               />
             ) : (
-              <Login
+              <Login // ㄴㄴ 아직이야~
                 apiBaseUrl={API_BASE_URL}
                 onLoginSuccess={() => setIsLoggedIn(true)}
               />

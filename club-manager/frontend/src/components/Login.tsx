@@ -11,7 +11,7 @@ export default function Login({ apiBaseUrl, onLoginSuccess }: LoginProps) {
   const [error, setError] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); //새로고침 방지 (계속 새로 쓰기 귀찮 잖어~)
     setError("");
 
     try {

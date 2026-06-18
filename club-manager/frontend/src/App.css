@@ -1,10 +1,43 @@
 body {
   background-color: #f1f5f9;
+  height: 100%;
+  background-image: linear-gradient(45deg, red, orange, yellow, green, blue);
   margin: 0;
 }
+html{
+  height: 100%;
+}
+@keyframes aa{
+  0%,100%{
+    background-color: red;
+    border: purple solid 5px;
+  }
+  20%{
+    background-color: orange;
+    border: blue solid 5px;
+  }
+  40%{
+    background-color: yellow;
+    border: green solid 5px;
+  }
+  65%{
+    background-color: green;
+    border: yellow solid 5px;
+  }
+  75%{
+    background-color: blue;
+    border: orange solid 5px;
+  }
+  85%{
+    background-color: purple;
+    border: red solid 5px;
+  }
+}
+
 
 button,
 input {
+  box-sizing: border-box;
   font: inherit;
 }
 
@@ -16,10 +49,12 @@ button {
   border-radius: 8px;
   cursor: pointer;
   font-weight: 700;
+  animation: aa infinite 5s linear;
 }
 
 button:hover {
   background-color: #1d4ed8;
+  animation: none;
 }
 
 .top-nav {
